@@ -1,5 +1,5 @@
 #!/bin/zsh
-
+  
 # Conda 초기화 (한 번만 실행)
 if ! grep -q "conda initialize" ~/.zshrc; then
     conda init zsh
