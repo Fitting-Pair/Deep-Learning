@@ -3,7 +3,7 @@ import argparse
 import json
 
 # 모듈 경로 추가
-module_path = "/root/smplifyx/content/SMPL-Anthropometry"
+module_path = "/home/aoa8432/smplifyx/content/SMPL-Anthropometry"
 if module_path not in sys.path:
     sys.path.append(module_path)
 # 작업 디렉토리 변경
