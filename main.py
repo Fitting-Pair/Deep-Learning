@@ -30,6 +30,7 @@ parent_dir = BASE_DIR.parent
 images_dir = BASE_DIR / "data/images"
 keypoints_dir = BASE_DIR / "data/keypoints"
 smplify_results_dir = BASE_DIR / "data/smplify_results"
+
 # 가상환경 경로 설정
 envs = {
     "openpose": "openpose",
