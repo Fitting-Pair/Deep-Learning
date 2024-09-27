@@ -62,7 +62,7 @@ async def process_image(userId: int = Form(...), file: UploadFile = File(...)):
     file_location = images_dir / file.filename
     with open(file_location, "wb") as f:
         shutil.copyfileobj(file.file, f)
-    # 1. OpenPose 실행
+        # 1. OpenPose 실행
     openpose_command = f"python scripts/openpose_script.py"
     openpose_stdout, openpose_stderr = run_command(openpose_command, envs["openpose"])
 
@@ -83,7 +83,7 @@ async def process_image(userId: int = Form(...), file: UploadFile = File(...)):
     obj_dir = smplify_results_dir / "meshes" / file.filename.replace('.png', '')
     if not obj_file.exists():
     # 파일이 없을 경우 에러 메시지 반환
-            return {"error": f"OBJ file not found: {obj_file}"}
+        return {"error": f"OBJ file not found: {obj_file}"}
     # 3. OBJ to JSON 변환
     obj2json_command = f"python scripts/obj2json_script.py --obj {obj_file}"
     obj2json_stdout, obj2json_stderr = run_command(obj2json_command, envs["obj2json"])
@@ -92,6 +92,7 @@ async def process_image(userId: int = Form(...), file: UploadFile = File(...)):
 
     #stdout으로부터 JSON 데이터를 파싱
     obj2json_output = obj2json_stdout.decode()
+
     json_data = json.loads(obj2json_output)
 
     # 후에 모델로 변환
@@ -103,9 +104,10 @@ async def process_image(userId: int = Form(...), file: UploadFile = File(...)):
     #obj.png file
     obj_png= "/root/smplifyx/content/data/smplify_results/meshes_png/000.png"
     #obj_png = smplify_results_dir / "meshes_png" / "000.png"
+    obj_file_name = f"obj{userId}.png"
     multipart_data = {
         "json":(None,response_data,"application/json"),
-        "file":("obj.png",open(obj_png,'rb'),"image/png")
+        "file":(obj_file_name,open(obj_png,'rb'),"image/png")
     }
     #전송
     retry_strategy = Retry(
@@ -123,7 +125,6 @@ async def process_image(userId: int = Form(...), file: UploadFile = File(...)):
      #'Content-Type': 'multipart/form-data'
     #}   
     url = "https://fittingpair.store/get/json"
-
     multipart_response = session.post(
         url,  # Spring 서버의 엔드포인트 URL
         files=multipart_data,  # 전송할 파일 데이
