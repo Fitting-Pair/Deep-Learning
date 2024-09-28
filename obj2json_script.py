@@ -1,7 +1,7 @@
 import sys,os
 import argparse
 import json
-
+import numpy as np
 # 모듈 경로 추가
 module_path = "/home/aoa8432/smplifyx/content/SMPL-Anthropometry"
 if module_path not in sys.path:
@@ -11,10 +11,21 @@ os.chdir(module_path)
 # 모듈 임포트
 from measure import generate_json
 from measurement_definitions import SMPLXMeasurementDefinitions, STANDARD_LABELS
+
+def convert_to_serializable(data):
+    if isinstance(data, np.float32):
+        return float(data)
+    elif isinstance(data, dict):
+        return {k: convert_to_serializable(v) for k, v in data.items()}
+    elif isinstance(data, list):
+        return [convert_to_serializable(i) for i in data]
+    else:
+        return data
+        
 def main(obj_path):
-    # OBJ to JSON 변환 명령어 실행
     json_data = generate_json(obj_path)
-    print(json.dumps(json_data))
+    serializable_data = convert_to_serializable(json_data)
+    print(json.dumps(serializable_data))
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="OBJ to JSON Script")
