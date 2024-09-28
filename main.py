@@ -103,7 +103,7 @@ async def process_image(userId: int = Form(...), file: UploadFile = File(...)):
     response_data = user_body_size_request_dto.json()
     print(response_data)
     #obj.png file
-    obj_png= "/root/smplifyx/content/data/smplify_results/meshes_png/000.png"
+    obj_png= "/home/aoa8432/smplifyx/content/data/smplify_results/meshes_png/000.png"
     #obj_png = smplify_results_dir / "meshes_png" / "000.png"
     obj_file_name = f"obj{userId}.png"
     multipart_data = {
